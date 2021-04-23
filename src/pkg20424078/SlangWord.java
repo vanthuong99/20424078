@@ -7,10 +7,16 @@ package pkg20424078;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,11 +24,66 @@ import java.util.logging.Logger;
  */
 public class SlangWord extends javax.swing.JFrame {
 
+    FileInputStream fileInputStream;
+    Map<String, String> map = new HashMap<String, String>();
+    DefaultTableModel tableModel = new DefaultTableModel();
+    Vector column = new Vector();
+
     /**
      * Creates new form SlangWord
      */
     public SlangWord() {
         initComponents();
+        this.setResizable(false);
+        this.setLocationRelativeTo(null);
+    }
+
+    public void WriteHistory(String text) {
+        try {
+            FileWriter writer = new FileWriter("slang_history.txt", true);
+            writer.write(text);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void LoadDisPlay(String fileName, boolean toMap) {
+        try {
+            fileInputStream = new FileInputStream(fileName);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(SlangWord.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Scanner scanner = new Scanner(fileInputStream);
+        try {
+            if (toMap) {
+                map.clear();
+            }
+            tableModel.setRowCount(0);
+            while (scanner.hasNextLine()) {
+                String str = scanner.nextLine();
+                int index = str.indexOf("`");
+                String slang = str.substring(0, index);
+                String def = str.substring(index + 1, str.length());
+                Vector row = new Vector();
+                row.add(slang);
+                row.add(def);
+                tableModel.addRow(row);
+                if (toMap) {
+                    map.put(slang, def);
+                }
+            }
+
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        } finally {
+            scanner.close();
+            try {
+                fileInputStream.close();
+            } catch (IOException ex) {
+                Logger.getLogger(SlangWord.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     /**
@@ -48,12 +109,15 @@ public class SlangWord extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
+        jButton11 = new javax.swing.JButton();
+        jButton12 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Slang words");
         setBackground(java.awt.Color.white);
-        setMaximumSize(new java.awt.Dimension(830, 510));
-        setMinimumSize(new java.awt.Dimension(830, 510));
+        setMaximumSize(new java.awt.Dimension(835, 500));
+        setMinimumSize(new java.awt.Dimension(835, 500));
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 Load(evt);
@@ -63,14 +127,29 @@ public class SlangWord extends javax.swing.JFrame {
         jButton1.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton1.setLabel("1. Tìm kiếm theo slang word");
         jButton1.setName("btn1"); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton2.setLabel("2. Tìm kiếm theo definition");
         jButton2.setName("btn2"); // NOI18N
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         jButton3.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton3.setLabel("3. Hiển thị history");
         jButton3.setName("btn3"); // NOI18N
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         jButton4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton4.setLabel("4. Thêm 1 slang words mới");
@@ -102,27 +181,58 @@ public class SlangWord extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Slang word", "Definition"
+
             }
         ));
         jScrollPane1.setViewportView(jTable1);
+
+        jLabel1.setFont(new java.awt.Font("Dialog", 3, 30)); // NOI18N
+        jLabel1.setForeground(java.awt.Color.blue);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("All Slang Words");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 460, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
+
+        jButton11.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jButton11.setText("12. Thoát");
+        jButton11.setName("btn12"); // NOI18N
+        jButton11.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+
+        jButton12.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        jButton12.setLabel("11. Tải lại danh sách slang word");
+        jButton12.setName("btn11"); // NOI18N
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton11ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -140,7 +250,9 @@ public class SlangWord extends javax.swing.JFrame {
                     .addComponent(jButton3)
                     .addComponent(jButton6)
                     .addComponent(jButton4)
-                    .addComponent(jButton5))
+                    .addComponent(jButton5)
+                    .addComponent(jButton11)
+                    .addComponent(jButton12))
                 .addGap(18, 18, 18)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -167,7 +279,11 @@ public class SlangWord extends javax.swing.JFrame {
                 .addComponent(jButton9)
                 .addGap(18, 18, 18)
                 .addComponent(jButton10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addComponent(jButton11)
+                .addContainerGap())
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -179,7 +295,9 @@ public class SlangWord extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -187,28 +305,112 @@ public class SlangWord extends javax.swing.JFrame {
 
     private void Load(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_Load
         // TODO add your handling code here:
-        FileInputStream fileInputStream = null;
-        try {
-            fileInputStream = new FileInputStream("slang.txt");
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(SlangWord.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Scanner scanner = new Scanner(fileInputStream);
-        try {
-            while (scanner.hasNextLine()) {
-                System.out.println(scanner.nextLine());
-            }
-        } catch (Exception ex) {
-            System.err.println(ex.getMessage());
-        } finally {
-            scanner.close();
-            try {
-                fileInputStream.close();
-            } catch (IOException ex) {
-                Logger.getLogger(SlangWord.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
+        column.add("Slang word");
+        column.add("Definition");
+        tableModel.setColumnIdentifiers(column);
+        jTable1.setModel(tableModel);
+        LoadDisPlay("slang.txt", true);
     }//GEN-LAST:event_Load
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        while (true) {
+            String key = JOptionPane.showInputDialog("Enter slang word:", "");
+            if (key != null) {
+                if (key.isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Vui lòng nhập từ khóa cần tìm",
+                            "Key is empty",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    String val = map.get(key);
+                    if (val == null) {
+                        int dialogButton = JOptionPane.YES_NO_OPTION;
+                        int dialogResult = JOptionPane.showConfirmDialog(this, "Không tìm thấy kết quả trùng khớp.\n Bạn muốn tìm tiếp tục tiềm kiếm?", "Not found result", dialogButton);
+                        if (dialogResult == 1) {
+                            jButton12.doClick();
+                            return;
+                        }
+                    } else {
+                        Vector row = new Vector();
+                        row.add(key);
+                        row.add(val);
+                        tableModel.setRowCount(0);
+                        tableModel.addRow(row);
+                        jLabel1.setText("Search Results");
+                        WriteHistory(key + "`" + val + "\n");
+                        return;
+                    }
+                }
+            } else {
+                jButton12.doClick();
+                return;
+            }
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        while (true) {
+            String def = JOptionPane.showInputDialog("Enter definition:", "");
+            if (def != null) {
+                if (def.isEmpty()) {
+                    JOptionPane.showMessageDialog(this,
+                            "Vui lòng nhập từ khóa cần tìm",
+                            "Definition is empty",
+                            JOptionPane.ERROR_MESSAGE);
+                } else {
+                    Map<String, String> rs = new HashMap<String, String>();
+                    for (Map.Entry<String, String> entry : map.entrySet()) {
+                        if (entry.getValue().compareTo(def) == 0) {
+                            rs.put(entry.getKey(), def);
+                        }
+                    }
+                    if (rs.isEmpty()) {
+                        int dialogButton = JOptionPane.YES_NO_OPTION;
+                        int dialogResult = JOptionPane.showConfirmDialog(this, "Không tìm thấy kết quả trùng khớp.\n Bạn muốn tìm tiếp tục tiềm kiếm?", "Not found result", dialogButton);
+                        if (dialogResult == 1) {
+                            jButton12.doClick();
+                            return;
+                        }
+                    } else {
+                        tableModel.setRowCount(0);
+                        String history = "";
+                        for (Map.Entry m : rs.entrySet()) {
+                            Vector row = new Vector();
+                            row.add(m.getKey());
+                            row.add(m.getValue());
+                            tableModel.addRow(row);
+                            history += m.getKey() + "`" + m.getValue() + "\n";
+                        }
+                        jLabel1.setText("Search Results");
+                        WriteHistory(history);
+                        return;
+                    }
+                }
+            } else {
+                jButton12.doClick();
+                return;
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        jLabel1.setText("Search history");
+        LoadDisPlay("slang_history.txt", false);
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton11ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton11ActionPerformed
+        // TODO add your handling code here:
+        jLabel1.setText("All Slang Words");
+        LoadDisPlay("slang.txt", true);
+    }//GEN-LAST:event_jButton11ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -224,16 +426,24 @@ public class SlangWord extends javax.swing.JFrame {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
+
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SlangWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SlangWord.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SlangWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SlangWord.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SlangWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SlangWord.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
+
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SlangWord.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SlangWord.class
+                    .getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -248,6 +458,8 @@ public class SlangWord extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
@@ -256,6 +468,7 @@ public class SlangWord extends javax.swing.JFrame {
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
