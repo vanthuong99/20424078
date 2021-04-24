@@ -16,6 +16,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -41,6 +42,16 @@ public class SlangWord extends javax.swing.JFrame {
     public void WriteHistory(String text) {
         try {
             FileWriter writer = new FileWriter("slang_history.txt", true);
+            writer.write(text);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void WriteSlangWord(String text, boolean ctn) {
+        try {
+            FileWriter writer = new FileWriter("slang.txt", ctn);
             writer.write(text);
             writer.close();
         } catch (IOException e) {
@@ -154,6 +165,11 @@ public class SlangWord extends javax.swing.JFrame {
         jButton4.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton4.setLabel("4. Thêm 1 slang words mới");
         jButton4.setName("btn4"); // NOI18N
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jButton5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton5.setLabel("5. Chỉnh sửa 1 slang word");
@@ -411,6 +427,54 @@ public class SlangWord extends javax.swing.JFrame {
         jLabel1.setText("All Slang Words");
         LoadDisPlay("slang.txt", true);
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        while (true) {
+            JTextField slang = new JTextField();
+            JTextField def = new JTextField();
+            Object[] message = {
+                "Slang word:", slang,
+                "Definition:", def
+            };
+            int option = JOptionPane.showConfirmDialog(null, message, "Add slang word", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                if (!slang.getText().isEmpty() && !def.getText().isEmpty()) {
+                    if (map.get(slang.getText()) != null) {
+                        int dialogButton = JOptionPane.YES_NO_OPTION;
+                        int dialogResult = JOptionPane.showConfirmDialog(this, "Slang word vừa nhập đã tồn tại.\n Bạn có muốn override?", "Override slang word confirm", dialogButton);
+                        if (dialogResult == 0) {
+                            System.out.println("override");
+                        } else {
+                            jButton12.doClick();
+                            return;
+                        }
+                    } else {
+                        WriteSlangWord(slang.getText() + "`" + def.getText() + "\n", true);
+                        jButton12.doClick();
+                        return;
+                    }
+                } else if (slang.getText().isEmpty()) {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogResult = JOptionPane.showConfirmDialog(this, "Slang word không được rỗng.\n Mời bạn nhập lại", "Add slang word fail", dialogButton);
+                    if (dialogResult == 1) {
+                        jButton12.doClick();
+                        return;
+                    }
+                } else if (def.getText().isEmpty()) {
+                    int dialogButton = JOptionPane.YES_NO_OPTION;
+                    int dialogResult = JOptionPane.showConfirmDialog(this, "Definition không được rỗng.\n Mời bạn nhập lại", "Add slang word fail", dialogButton);
+                    if (dialogResult == 1) {
+                        jButton12.doClick();
+                        return;
+                    }
+                }
+            } else {
+                jButton12.doClick();
+                return;
+            }
+        }
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
