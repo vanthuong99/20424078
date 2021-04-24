@@ -74,14 +74,16 @@ public class SlangWord extends javax.swing.JFrame {
             while (scanner.hasNextLine()) {
                 String str = scanner.nextLine();
                 int index = str.indexOf("`");
-                String slang = str.substring(0, index);
-                String def = str.substring(index + 1, str.length());
-                Vector row = new Vector();
-                row.add(slang);
-                row.add(def);
-                tableModel.addRow(row);
-                if (toMap) {
-                    map.put(slang, def);
+                if (index != -1) {
+                    String slang = str.substring(0, index);
+                    String def = str.substring(index + 1, str.length());
+                    Vector row = new Vector();
+                    row.add(slang);
+                    row.add(def);
+                    tableModel.addRow(row);
+                    if (toMap) {
+                        map.put(slang, def);
+                    }
                 }
             }
 
@@ -451,6 +453,7 @@ public class SlangWord extends javax.swing.JFrame {
                         }
                     } else {
                         WriteSlangWord(slang.getText() + "`" + def.getText() + "\n", true);
+                        JOptionPane.showMessageDialog(this, "Add success!!!");
                         jButton12.doClick();
                         return;
                     }
