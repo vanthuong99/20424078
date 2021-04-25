@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -198,6 +199,11 @@ public class SlangWord extends javax.swing.JFrame {
         jButton8.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton8.setLabel("8. Random 1 slang word ");
         jButton8.setName("btn8"); // NOI18N
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         jButton9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton9.setLabel("9. Đố vui slang word");
@@ -510,6 +516,17 @@ public class SlangWord extends javax.swing.JFrame {
             e.getMessage();
         }
     }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        // TODO add your handling code here:
+        Object keyRandom = map.keySet().toArray()[new Random().nextInt(map.keySet().toArray().length)];
+        tableModel.setRowCount(0);
+        Vector row = new Vector();
+        row.add(keyRandom.toString());
+        row.add(map.get(keyRandom));
+        tableModel.addRow(row);
+        jLabel1.setText("Random one slang word");
+    }//GEN-LAST:event_jButton8ActionPerformed
 
     /**
      * @param args the command line arguments
