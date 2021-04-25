@@ -7621,7 +7621,7 @@ BAE`Baby
 STML`Short Term Memory Loss
 BAG`Get
 BAH`Bored As Hell
-BAI`Bye
+BAI`Byebye
 BAK`Back At Keyboard
 BAM`Below Average Mentality| Exclamation of happiness
 DHCP`Dynamic Host Configuration Protocol

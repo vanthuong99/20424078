@@ -189,6 +189,11 @@ public class SlangWord extends javax.swing.JFrame {
         jButton5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton5.setLabel("5. Chỉnh sửa 1 slang word");
         jButton5.setName("btn5"); // NOI18N
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton6.setText("6. Xóa slang word đã chọn");
@@ -587,6 +592,40 @@ public class SlangWord extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_jButton6ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        // TODO add your handling code here:
+        if (jTable1.getSelectionModel().isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn một slang word trong danh sách bên phải màn hình để chỉnh sửa!!!");
+        } else {
+            int row = jTable1.getSelectedRow();
+            String key = jTable1.getModel().getValueAt(row, 0).toString();
+            while (true) {
+                String def = JOptionPane.showInputDialog("Enter definition:", map.get(key));
+                if (def != null) {
+                    if (def.isEmpty()) {
+                        JOptionPane.showMessageDialog(this,
+                                "Definition không được rỗng!!!",
+                                "Definition is empty",
+                                JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        map.replace(key, def);
+                        String text = "";
+                        for (Map.Entry<String, String> entry : map.entrySet()) {
+                            text += entry.getKey() + "`" + entry.getValue() + "\n";
+                        }
+                        WriteSlangWord(text, false);
+                        JOptionPane.showMessageDialog(this, "Chỉnh sửa thành công!!!");
+                        jButton12.doClick();
+                        return;
+                    }
+                } else {
+                    jButton12.doClick();
+                    return;
+                }
+            }
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
