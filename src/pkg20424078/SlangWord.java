@@ -371,6 +371,7 @@ public class SlangWord extends javax.swing.JFrame {
         column.add("Definition");
         tableModel.setColumnIdentifiers(column);
         jTable1.setModel(tableModel);
+        jTable1.setAutoCreateRowSorter(true);
         LoadDisPlay("slang.txt", true);
     }//GEN-LAST:event_Load
 
