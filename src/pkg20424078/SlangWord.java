@@ -21,7 +21,10 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
+import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -33,7 +36,11 @@ public class SlangWord extends javax.swing.JFrame {
 
     FileInputStream fileInputStream;
     Map<String, String> map = new HashMap<String, String>();
-    DefaultTableModel tableModel = new DefaultTableModel();
+    DefaultTableModel tableModel = new DefaultTableModel() {
+        public boolean isCellEditable(int rowIndex, int mColIndex) {
+            return false;
+        }
+    };
     Vector column = new Vector();
 
     /**
@@ -184,8 +191,13 @@ public class SlangWord extends javax.swing.JFrame {
         jButton5.setName("btn5"); // NOI18N
 
         jButton6.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
-        jButton6.setLabel("6. Xóa 1 slang word");
+        jButton6.setText("6. Xóa slang word đã chọn");
         jButton6.setName("btn6"); // NOI18N
+        jButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton6ActionPerformed(evt);
+            }
+        });
 
         jButton7.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton7.setLabel("7. Khôi phục danh sách slang words gốc");
@@ -208,10 +220,20 @@ public class SlangWord extends javax.swing.JFrame {
         jButton9.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton9.setLabel("9. Đố vui slang word");
         jButton9.setName("btn9"); // NOI18N
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
 
         jButton10.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jButton10.setLabel("10. Đố vui definition");
         jButton10.setName("btn10"); // NOI18N
+        jButton10.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton10ActionPerformed(evt);
+            }
+        });
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -224,6 +246,7 @@ public class SlangWord extends javax.swing.JFrame {
 
             }
         ));
+        jTable1.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         jScrollPane1.setViewportView(jTable1);
 
         jLabel1.setFont(new java.awt.Font("Dialog", 3, 30)); // NOI18N
@@ -527,6 +550,43 @@ public class SlangWord extends javax.swing.JFrame {
         tableModel.addRow(row);
         jLabel1.setText("Random one slang word");
     }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+//        String[] values = {"0", "3", "6", "12", "18", "24"};
+//        Object selected = JOptionPane.showInputDialog(null, "What is the target Nicotine level?", "Selection", JOptionPane.DEFAULT_OPTION, null, values, "0");
+//        if (selected != null) {
+//            String selectedString = selected.toString();
+//            System.out.println(selectedString);
+//        } else {
+//            System.out.println("cancle");
+//        }
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton10ActionPerformed
+
+    private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
+        // TODO add your handling code here:
+        if (jTable1.getSelectionModel().isSelectionEmpty()) {
+            JOptionPane.showMessageDialog(null, "Vui lòng chọn một slang word trong danh sách bên phải màn hình để xóa!!!");
+        } else {
+            int dialogResult = JOptionPane.showConfirmDialog(null, "Xóa slang word đã chọn?", "Confirm delete", 0);
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                int row = jTable1.getSelectedRow();
+                String key = jTable1.getModel().getValueAt(row, 0).toString();
+                map.remove(key);
+                String text = "";
+                for (Map.Entry<String, String> entry : map.entrySet()) {
+                    text += entry.getKey() + "`" + entry.getValue() + "\n";
+                }
+                WriteSlangWord(text, false);
+                JOptionPane.showMessageDialog(this, "Xóa thành công!!!");
+                jButton12.doClick();
+            }
+        }
+    }//GEN-LAST:event_jButton6ActionPerformed
 
     /**
      * @param args the command line arguments
