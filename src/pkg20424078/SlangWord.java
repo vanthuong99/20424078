@@ -446,14 +446,23 @@ public class SlangWord extends javax.swing.JFrame {
                         int dialogButton = JOptionPane.YES_NO_OPTION;
                         int dialogResult = JOptionPane.showConfirmDialog(this, "Slang word vừa nhập đã tồn tại.\n Bạn có muốn override?", "Override slang word confirm", dialogButton);
                         if (dialogResult == 0) {
-                            System.out.println("override");
+                            map.replace(slang.getText(), def.getText());
+                            String text = "";
+                            for (Map.Entry<String, String> entry : map.entrySet()) {
+                                text += entry.getKey() + "`" + entry.getValue() + "\n";
+                            }
+                            WriteSlangWord(text, false);
+                            JOptionPane.showMessageDialog(this, "Thêm thành công!!!");
+                            jButton12.doClick();
+                            return;
                         } else {
+                            JOptionPane.showMessageDialog(this, "Đã hủy!!!");
                             jButton12.doClick();
                             return;
                         }
                     } else {
                         WriteSlangWord(slang.getText() + "`" + def.getText() + "\n", true);
-                        JOptionPane.showMessageDialog(this, "Add success!!!");
+                        JOptionPane.showMessageDialog(this, "Thêm thành công!!!");
                         jButton12.doClick();
                         return;
                     }
