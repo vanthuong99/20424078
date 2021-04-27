@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -27,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import jdk.nashorn.internal.runtime.options.Options;
 
 /**
  *
@@ -371,7 +373,6 @@ public class SlangWord extends javax.swing.JFrame {
         column.add("Definition");
         tableModel.setColumnIdentifiers(column);
         jTable1.setModel(tableModel);
-        jTable1.setAutoCreateRowSorter(true);
         LoadDisPlay("slang.txt", true);
     }//GEN-LAST:event_Load
 
@@ -559,14 +560,29 @@ public class SlangWord extends javax.swing.JFrame {
 
     private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
         // TODO add your handling code here:
-//        String[] values = {"0", "3", "6", "12", "18", "24"};
-//        Object selected = JOptionPane.showInputDialog(null, "What is the target Nicotine level?", "Selection", JOptionPane.DEFAULT_OPTION, null, values, "0");
-//        if (selected != null) {
-//            String selectedString = selected.toString();
-//            System.out.println(selectedString);
-//        } else {
-//            System.out.println("cancle");
-//        }
+        int score = 0;
+        while (true) {
+            ArrayList<String> options = new ArrayList<String>();
+            for (int i = 0; i < 4; i++) {
+                options.add(map.get(map.keySet().toArray()[new Random().nextInt(map.keySet().toArray().length)]));
+            }
+            Object keyQuestion = map.keySet().toArray()[new Random().nextInt(map.keySet().toArray().length)];
+            Object defQuestion = map.get(keyQuestion);
+            int index = new Random().nextInt(4);
+            options.set(index, defQuestion.toString());
+            Object selected = JOptionPane.showInputDialog(null, "Hãy chọn definition đúng cho slang word sau: " + keyQuestion, "Quiz slang word", JOptionPane.DEFAULT_OPTION, null, options.toArray(), "0");
+            if (selected != null) {
+                String ans = selected.toString();
+                if (ans == defQuestion) {
+                    score += 10;
+                    JOptionPane.showMessageDialog(this, "Chúc mừng bạn đã trả lời đúng!!!\n Điểm hiện tại của bạn là " + score);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Đáp án bạn chọn chưa đúng!!!\n Đáp án đúng là: " + defQuestion);
+                }
+            } else {
+                return;
+            }
+        }
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed

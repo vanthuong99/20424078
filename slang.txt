@@ -1,6 +1,4 @@
-BBC`British Broadcasting Corporation
 BBB`Bugging Beyond Belief
-BBE`Babe
 GLOTR`Good Luck On The Rebuild
 TWSS`That's What She Said
 BBG`Best Be Going
@@ -8,9 +6,7 @@ BBK`Boy Better Know
 TFRM`Thanks For Reminding Me
 BBM`Blackberry Messaging
 BBL`Be Back Later
-BBO`Being Bored Online
 BBN`Be Back Never
-10-4`Understood, OK
 SDA`Seventh-Day Adventist
 BBS`Be Back Soon| Bulletin Board System
 U.O.E.N.O`You Don't Even Know
@@ -31,7 +27,6 @@ BCE`Before Common Era
 BCG`Birth Control Glasses
 GTBOSH`Glad To Be Of Some Help
 *`Indicating a spelling correction
-SEC`Second
 2`To
 SCNR`Sorry, Could Not Resist
 BCS`Bowl Championship Series
