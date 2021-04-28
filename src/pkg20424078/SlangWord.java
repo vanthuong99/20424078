@@ -587,6 +587,28 @@ public class SlangWord extends javax.swing.JFrame {
 
     private void jButton10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton10ActionPerformed
         // TODO add your handling code here:
+        int score = 0;
+        while (true) {
+            ArrayList<String> options = new ArrayList<String>();
+            for (int i = 0; i < 4; i++) {
+                options.add(map.keySet().toArray()[new Random().nextInt(map.keySet().toArray().length)].toString());
+            }
+            int index = new Random().nextInt(4);
+            Object keyQuestion = options.get(index);
+            Object defQuestion = map.get(keyQuestion);
+            Object selected = JOptionPane.showInputDialog(null, "Hãy chọn slang word đúng cho definition sau: " + defQuestion, "Quiz definition", JOptionPane.DEFAULT_OPTION, null, options.toArray(), "0");
+            if (selected != null) {
+                String ans = selected.toString();
+                if (ans == keyQuestion) {
+                    score += 10;
+                    JOptionPane.showMessageDialog(this, "Chúc mừng bạn đã trả lời đúng!!!\n Điểm hiện tại của bạn là " + score);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Đáp án bạn chọn chưa đúng!!!\n Đáp án đúng là: " + keyQuestion);
+                }
+            } else {
+                return;
+            }
+        }
     }//GEN-LAST:event_jButton10ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
